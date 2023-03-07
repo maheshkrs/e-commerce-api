@@ -17,7 +17,7 @@ describe('Signin', () => {
         }
         chai.request(app).post('http://192.81.213.186:3001/auth/login').send(data).end((err, res) => {
             console.log("response",res);
-            console.log("err", err);
+            console.log("error", err);
             // expect(res.s).to.equal(200);
         })
         done()
