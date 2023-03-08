@@ -11,8 +11,9 @@ const productsservice = require("../Middleware/productsservice")
 router.post("/create", productsservice.create);
 router.get("/list", productsservice.list);
 router.delete("/delete/:id", productsservice.delete);
-// router.get("/:id", userservice.userid);
-// router.put("/update/:id", userservice.update);
+router.put("/update/:id", productsservice.update);
+router.get("/:id", productsservice.productid);
+
 
 
 

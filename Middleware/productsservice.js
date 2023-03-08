@@ -75,7 +75,7 @@ module.exports.list = async (req, res) => {
             })
         }
         else {
-            res.send({
+            res.status(201).send({
                 status: 201,
                 meaasge: "Data not available",
                 data: {}
@@ -83,7 +83,7 @@ module.exports.list = async (req, res) => {
         }
 
     }).catch((err) => {
-        res.send({
+        res.status(404).send({
             status: 404,
             meaasge: "failed",
             data: result
@@ -102,7 +102,7 @@ module.exports.delete = async (req, res) => {
 
     await products.deleteOne({ _id: id }).then((result) => {
         console.log("result", result);
-        res.send({
+        res.status(200).send({
             status: 200,
             message: "Record deleted successfuly",
             length: result.length,
@@ -111,10 +111,53 @@ module.exports.delete = async (req, res) => {
 
 
     }).catch((err) => {
-        res.send({
+        res.status(404).send({
             status: 404,
             message: "failed to delete",
             // data: result
         })
     })
 };
+
+// TO UPDATE THE PRODUCT BY ID
+
+module.exports.update = async (req, res) => {
+    let body = req.body;
+    const id = req.params.id;
+
+    await products.updateOne({ _id: id }, { $set: { productname: body.productname, producttype: body.producttype, productprice:body.productprice,producrdescription:body.producrdescription } }).then((result) => {
+
+        res.status(200).send({
+            status: 200,
+            message: "Producst updated successfully",
+            length: result.length,
+            data: result
+        })
+
+
+    }).catch((err) => {
+        res.status(404).send({
+            status: 404,
+            meaasge: "failed to update products",
+            // data: result
+        })
+    })
+};
+
+// GET PRODUCT BY PRODUCT ID
+module.exports.productid = (req, res) => {
+    let body = req.body;
+    if (!ObjectId.isValid(req.params.id))
+        return res.status(400).send({ status: 400, message: `No record for the given - ${req.params.id}` });
+    const id = req.params.id;
+    console.log("reuest", id);
+    products.find({ _id: id }, (err, doc) => {
+        if (!err & (doc !== null)) {
+            res.status(200).send({ status: 200, message: "success", data: doc });
+        } else {
+            console.log("Error while getting data");
+            res.status(404).send({ status: 404, message: "fail" });
+        }
+    });
+
+}
