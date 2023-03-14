@@ -6,6 +6,7 @@ const app = express();
 
 const userController = require("./controllers/userController");
 const productsController = require("./controllers/productsController")
+const cartController = require("./controllers/cartController")
 const userSchema  = require("./models/user")
 app.use(express.json())
 
@@ -21,6 +22,7 @@ app.use(express.json())
 app.use(cors());
 app.use("/api/v1/users", userController);
 app.use("/api/v1/products", productsController);
+app.use("/api/v1/cart", cartController);
 
 app.get('/test',(req, res) => {
     res.send({

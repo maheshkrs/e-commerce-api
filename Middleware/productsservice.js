@@ -38,7 +38,7 @@ module.exports.create =  (req, res) =>{
                 if (result) {
                     res.status(200).send({
                         status: 200,
-                        meaasge: "Products added Successfully"
+                        message: "Products added Successfully"
                     })
                 }
                 else {

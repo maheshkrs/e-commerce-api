@@ -35,7 +35,7 @@ module.exports.signup = (req, res) => {
                   
                    res.status(409).send({
                        status: 409,
-                       message: "User Exists",
+                       message: "User already Exists",
                    });
                  
                }   else {
@@ -44,7 +44,7 @@ module.exports.signup = (req, res) => {
                     console.log("users signrd",result)
                     res.send({
                         status:200,
-                        message:"succesfully signup"
+                        message:"Succesfully Registered"
                     })
                    })
                        .catch((err) => {
@@ -76,7 +76,7 @@ module.exports.signin = (req, res) => {
             if (user < 1 || user.username == '') {
                 return res.status(404).json({
                     status: 404,
-                    message: "email not found, user doesnot exist",
+                    message: "User not found, User doesnot exist",
                 });
             }
             bcrypt.compare(req.body.userpassword, user.userpassword, (err, result) => {
@@ -85,7 +85,7 @@ module.exports.signin = (req, res) => {
                 if (err) {
                     return res.status(404).json({
                         status: 404,
-                        message: "password Auth failed",
+                        message: "Password Auth failed",
                     });
                 }
                 if (result) {
@@ -106,20 +106,22 @@ module.exports.signin = (req, res) => {
                     // 
                     return res.status(200).json({
                         status: 200,
-                        message: "login Auth Succesfull",
+                        userid: user._id,
+                        username:user.username,
+                        message: "Login Auth Succesfull",
                         token: token,
                     });
                 }
                 res.status(401).json({
                     status: 401,
-                    message: "password Auth failed",
+                    message: "Password Auth failed",
                 });
             });
         })
         .catch((err) => {
             console.log(err);
             res.status(500).json({
-                message: "login failed",
+                message: "Login failed",
             });
         });
 
