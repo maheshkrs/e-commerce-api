@@ -11,6 +11,8 @@ const cartservice = require("../Middleware/cartservice")
 // CART
 
 router.post("/", cartservice.addItemToCart);
+router.get("/list", cartservice.list);
+router.get("/:id", cartservice.userid);
 // router.get("/list", productsservice.list);
 // router.delete("/delete/:id", productsservice.delete);
 // router.put("/update/:id", productsservice.update);

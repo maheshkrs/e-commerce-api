@@ -34,12 +34,12 @@ exports.addItemToCart = async (req, res) => {
                 const item = cart.cartItems.find(c => c.productid == product);
                 
                  if (item){
-                    
+                  
                      carts.findOneAndUpdate({ "userid": Usercart, "cartItems.productid": product }, {
-                         "$set": {
+                         "$push": {
                              "cartItems": {
                                 ...req.body.cartItems[0],
-                                  quantity: item.quantity + req.body.cartItems[0].quantity,
+                                  quantity: req.body.cartItems[0].quantity + item.quantity,
                                   price: item.price + req.body.cartItems[0].price
                             }
                          }
@@ -53,11 +53,15 @@ exports.addItemToCart = async (req, res) => {
                                      message: "error",
                                  })
                              if (cart) {
-                                 return res.status(200).json({ cart })
+                                console.log("test====",cart);
+                               return res.status(200).json({ cart })
+                           
                              }
                          })
 
                  }else {
+
+                   
                      carts.findOneAndUpdate({ userid: Usercart }, {
                          "$push": {
                              "cartItems": req.body.cartItems
@@ -95,5 +99,58 @@ exports.addItemToCart = async (req, res) => {
              }
         })
 };
+
+
+// 
+
+module.exports.list = async (req, res) => {
+
+    let body = req.body;
+   
+    await carts.find({}).then((result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                message: "Data available",
+                length: result.length,
+                data: result
+            })
+        }
+        else {
+            res.send({
+                status: 201,
+                meaasge: "Data not available",
+                data: {}
+            })
+        }
+
+    }).catch((err) => {
+        res.send({
+            status: 404,
+            meaasge: "failed",
+            data: result
+        })
+    }) 
+
+}
+
+
+// cart by user id
+
+module.exports.userid = (req, res) => {
+    let body = req.body;
+    if (!ObjectId.isValid(req.params.id))
+        return res.send({ status: 400, message: `No cart list for the given  - ${req.params.id}` });
+    const id = req.params.id;
+    carts.find({ userid: id }, (err, doc) => {
+    if (!err & (doc !== null)) {
+            res.send({ status: 200, message: "success", data: doc });
+        } else {
+            console.log("Error while getting data");
+            res.send({ status: 404, message: "fail" });
+        }
+    });
+
+}
 
 

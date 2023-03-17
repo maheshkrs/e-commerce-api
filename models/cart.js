@@ -6,6 +6,7 @@ exports.carts = mongoose.model('carts', new mongoose.Schema({
     cartItems: [
         {
             productid: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
+            productname: { type: String, ref: "products" },
             quantity: { type: Number },
             price: { type: Number }
         }

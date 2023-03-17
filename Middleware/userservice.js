@@ -192,7 +192,7 @@ module.exports.userid =  (req, res) => {
     if (!ObjectId.isValid(req.params.id))
          return res.send({ status: 400, message: `No record for the given  - ${req.params.id}` });
          const id = req.params.id;
-           console.log("reuest",id);
+        //    console.log("reuest",id);
          users.find({ _id: id }, (err, doc) => {
         if (!err & (doc !== null)) {
          res.send({ status: 200, message: "success", data: doc });
@@ -233,7 +233,7 @@ module.exports.delete = async (req, res) => {
     // console.log('======',res);
     
     const id = req.params.id;
-    console.log("reuest", id);
+    // console.log("reuest", id);
 
     await users.deleteOne({ _id: id}).then((result) => {
               console.log("result",result);     

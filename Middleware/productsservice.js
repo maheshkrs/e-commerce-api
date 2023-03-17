@@ -18,7 +18,7 @@ module.exports.create =  (req, res) =>{
     let body = req.body;
 
     products.findOne({ productname: req.body.productname }, (err, doc) => {
-               
+      
        
         if (!err & (doc !== null) && !req.body.productname == '') {
               res.status(409).send({
@@ -34,7 +34,9 @@ module.exports.create =  (req, res) =>{
             });
         } 
         else {
+           
              products.insertMany(body).then((result) => {
+                console.log("tester----",result);
                 if (result) {
                     res.status(200).send({
                         status: 200,
@@ -50,7 +52,7 @@ module.exports.create =  (req, res) =>{
 
             })
                 .catch((err) => {
-                    res.status(404).send({
+                   res.status(404).send({
                         status: 404,
                         meaasge: "Failed to add Products",
                     })
@@ -98,7 +100,7 @@ module.exports.delete = async (req, res) => {
     // console.log('======',res);
 
     const id = req.params.id;
-    console.log("reuest", id);
+    // console.log("reuest", id);
 
     await products.deleteOne({ _id: id }).then((result) => {
         console.log("result", result);
@@ -150,7 +152,7 @@ module.exports.productid = (req, res) => {
     if (!ObjectId.isValid(req.params.id))
         return res.status(400).send({ status: 400, message: `No record for the given - ${req.params.id}` });
     const id = req.params.id;
-    console.log("reuest", id);
+    // console.log("reuest", id);
     products.find({ _id: id }, (err, doc) => {
         if (!err & (doc !== null)) {
             res.status(200).send({ status: 200, message: "success", data: doc });
